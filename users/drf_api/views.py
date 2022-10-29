@@ -31,3 +31,53 @@ class UserListApiView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class UserDetailApiView(APIView):
+    def get_userByID(self,user_id):
+        try:
+            return User.objects.get(id=user_id)
+        except User.DoesNotExist:
+            return None
+    #3. get user by id
+    def get(self, request, user_id, *args, **kwargs):
+        user_instance = self.get_userByID(user_id)
+        if not user_instance:
+            return Response(
+                {"res": "the user id does not exist"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        serializer = UserSerializer(user_instance)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    #4. update user
+    def put(self, request, user_id, *args, **kwargs):
+        user_instance = self.get_userByID(user_id)
+        if not user_instance:
+            return Response(
+                {"res": "the user id does not exist"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        data = {
+            'first_name': request.data.get('first_name'),
+            'last_name': request.data.get('last_name'),
+            'gender': request.data.get('gender'),
+            'email': request.data.get('email'),
+        }
+        serializer = UserSerializer(instance=user_instance,data=data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    #5. delete user
+    def delete(self, request, user_id, *args, **kwargs):
+        user_instance = self.get_userByID(user_id)
+        if not user_instance:
+            return Response(
+                {"res": "user id does not exists"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        user_instance.delete()
+        return Response(
+            {"res": "user deleted!"},
+            status=status.HTTP_200_OK
+        )
