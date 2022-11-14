@@ -6,12 +6,17 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
+from rest_framework.generics import GenericAPIView
+
 # Create your views here.
 # class UserViewSet(viewsets.ModelViewSet):
 #     queryset = User.objects.all()
 #     serializer_class = UserSerializer
 
-class UserListApiView(APIView):
+class UserListApiView(GenericAPIView):
+
+    serializer_class = UserSerializer
+
     #1.get all users
     def get(self, request, *args, **kwargs):
         users = User.objects.all()
@@ -32,7 +37,10 @@ class UserListApiView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class UserDetailApiView(APIView):
+class UserDetailApiView(GenericAPIView):
+
+    serializer_class = UserSerializer
+
     def get_userByID(self,user_id):
         try:
             return User.objects.get(id=user_id)

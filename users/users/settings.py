@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'n_api.apps.NApiConfig',
     'drf_api.apps.DrfApiConfig',
     'rest_framework',
+    'drf_yasg',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
