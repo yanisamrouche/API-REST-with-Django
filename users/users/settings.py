@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'drf_api.apps.DrfApiConfig',
     'rest_framework',
     'drf_yasg',
+    'ninja_extra',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

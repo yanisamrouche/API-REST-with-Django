@@ -16,12 +16,13 @@ from rest_framework.generics import GenericAPIView
 class UserListApiView(GenericAPIView):
 
     serializer_class = UserSerializer
-
     #1.get all users
     def get(self, request, *args, **kwargs):
         users = User.objects.all()
         serializer = UserSerializer(users, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    #get user by gender
+
     #2.create users
     def post(self, request, *args, **kwargs):
         data = {
@@ -56,6 +57,7 @@ class UserDetailApiView(GenericAPIView):
             )
         serializer = UserSerializer(user_instance)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
     #4. update user
     def put(self, request, user_id, *args, **kwargs):
         user_instance = self.get_userByID(user_id)

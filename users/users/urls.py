@@ -6,5 +6,4 @@ from n_api.api import api
 urlpatterns = [
    path('drf_api/', include('drf_api.urls')),
    path('ninja_api/', api.urls),
-
 ]
